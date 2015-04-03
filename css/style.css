@@ -1,0 +1,131 @@
+﻿html, body, #map-canvas {
+        margin: 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+    }
+.map { height:300px; width:300px; }
+#list {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 11px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0px;
+    overflow: auto;
+    width: 20%%;
+    height: 60%;
+    border-radius: 25px;
+}
+
+#impList {
+    background-color: #fff;
+    border: 3px solid red;
+    font-family: Roboto;
+    font-size: 11px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0px;
+    overflow: auto;
+    width: 20%%;
+    height: 25%;
+    border-radius: 25px;
+}
+
+#couponList {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 10px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0px;
+    overflow: auto;
+    width: 20%%;
+    height: 50%;
+    border-radius: 25px;
+}
+ul {
+    cursor:pointer;
+    padding: 0;
+    margin: 0;
+}
+
+li {
+    padding-left: 0;
+    margin: 0; 
+}
+
+li p {
+    text-align: center;
+    padding: 5px;
+    margin: 0;
+}
+
+p.name {
+    font-size: 13px;
+    font-weight: bold;
+}
+
+li:hover {
+    background-color: #0099FF;
+}
+
+  .controls {
+        margin-top: 16px;
+        border: 1px solid transparent;
+        border-radius: 2px 0 0 2px;
+        box-sizing: border-box;
+        -moz-box-sizing: border-box;
+        height: 32px;
+        outline: none;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+      }
+
+      #search-input {
+        background-color: #fff;
+        font-family: Roboto;
+        font-size: 15px;
+        font-weight: 300;
+        margin-left: 12px;
+        padding: 0 11px 0 13px;
+        text-overflow: ellipsis;
+        width: 400px;
+        border-radius: 15px;
+      }
+
+      #search-input:focus {
+        border-color: #4d90fe;
+      }
+
+      .pac-container {
+        font-family: Roboto;
+      }
+
+.infobox-wrapper {
+    display:none;
+}
+#infobox {
+    border:2px solid black;
+    margin-top: 8px;
+    background:#333;
+    color:#FFF;
+    font-family:Arial, Helvetica, sans-serif;
+    font-size:12px;
+    padding: .5em 1em;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    text-shadow:0 -1px #000000;
+    -webkit-box-shadow: 0 0  8px #000;
+    box-shadow: 0 0 8px #000;
+}
+.title {
+    text-align:center;
+    color:cadetblue;
+
+}
+
+.gmnoprint img {
+    max-width: none; 
+}
+
