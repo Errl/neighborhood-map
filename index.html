@@ -3,10 +3,9 @@
 <html lang="en" xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title></title>
     <link href="css/style.css" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="https://maps.googleapis.com/maps/api/js?libraries=places&key=AIzaSyDLRxZMTqapXSFfZG3_NGCTJc3R_NvBAro"></script>
-    
 </head>
 <body>
     <input id="search-input" class="controls" type="text" placeholder="restaurant">
@@ -23,8 +22,8 @@
             </ul>
         </div>
         <div id="list">
-            <h1 class="title">Search Results</h1>
-            <p class="title"><input class="title" data-bind="textInput: filter" placeholder="type to filter results" /><button class="title" data-bind="click: $root.showMarkers">filter markers</button></p>
+            <h2 class="title">Search Results</h2>
+            <p class="title"><input class="search" data-bind="textInput: filter" placeholder="type to filter results" /></p>
             <ul data-bind="foreach: filteredItems">
                 <li data-bind="click: $parent.clickMarker">
                     <p class="name" data-bind="text: name"></p>
@@ -33,8 +32,8 @@
             </ul>
         </div>
         <div id="couponList">
-            <h1 class="title">Local Deals</h1>
-            <p class="title"><input class="title" data-bind="value: filterDeal, valueUpdate: 'afterkeydown'" placeholder="type to filter results" /><button class="title" data-bind="click: $root.hideMarkerDeals">filter markers</button></p>
+            <h2 class="title">Local Deals</h2>
+            <p class="title"><input class="search" data-bind="value: filterDeal, valueUpdate: 'afterkeydown'" placeholder="type to filter results" /></p>
             <ul data-bind="foreach: filteredDeals">
                 <li data-bind="click: $parent.clickMarker">
                     <p class="name" data-bind="text: name"></p>
@@ -43,7 +42,6 @@
             </ul>
         </div>
     </div>
-    <script type="text/javascript" src="http://google-maps-utility-library-v3.googlecode.com/svn/trunk/infobox/src/infobox.js"></script>
     <script src="js/lib/jquery.min.js"></script>
     <script src="js/lib/knockout-3.2.0.js"></script>
     <script src="js/script.js"></script>
