@@ -1,16 +1,16 @@
 var locations = [
     {
-        name: 'Newport Rental Office',
-        myLat: 40.726820,
-        myLng: -74.033282,
-        photo: 'img/newportrentals.jpg'
+        name: '9/11 Tribute Center',
+        myLat: 40.709784,
+        myLng: -74.012432,
+        photo: 'img/911tribute.jpg'
     },
 
     {
-        name: 'Newport Mall',
-        myLat: 40.727662,
-        myLng: -74.038607,
-        photo: 'img/newportmall.jpg'
+        name: 'NY Stock Exchange',
+        myLat: 40.707096,
+        myLng: -74.010675,
+        photo: 'img/stockexchange.jpg'
     },
 
     {
@@ -21,17 +21,17 @@ var locations = [
     },
 
      {
-         name: 'Holland Tunnel',
-         myLat: 40.727416,
-         myLng: -74.021116,
-         photo: 'img/holland.jpg'
+         name: 'South Street Seaport',
+         myLat: 40.705856,
+         myLng: -74.001900,
+         photo: 'img/seaport.jpg'
      },
 
      {
-         name: 'Path Train',
-         myLat: 40.726690,
-         myLng: -74.034464,
-         photo: 'img/path.jpg'
+         name: 'NY City Hall',
+         myLat: 40.713160,
+         myLng: -74.006389,
+         photo: 'img/cityhall.jpg'
      },
 
      {
@@ -75,10 +75,10 @@ function mapsApiReady() {
 window.onload = loadMapsAPI;
 
 initialize = function () {
-    var newport = new google.maps.LatLng(40.722576, -74.035428);
+    var newport = new google.maps.LatLng(40.715369, -73.998259);
 
     var mapOptions = {
-        zoom: 15,
+        zoom: 14,
         center: newport,
         draggablecursur: null,
         mapTypeControl: true,
@@ -134,10 +134,11 @@ initialize = function () {
             query: 'food'
         };
 
+        getDeals();
         service.textSearch(request, callback);
         searchListener(searchBox);
-        getDeals();
         setImpPlaces();
+
         self.filteredItems = ko.computed(function () {
             var filter = this.filter().toLowerCase();
             if (!filter) {
@@ -164,6 +165,7 @@ initialize = function () {
                 }
             }
         }, self);
+
         self.togglePlacesMarkers = ko.dependentObservable(function () {
             //find out the categories that are missing from uniqueNames
             var differences = ko.utils.compareArrays(self.placeList(), self.filteredItems());
@@ -181,12 +183,12 @@ initialize = function () {
 
             for (i = 0; i < results.length; i++) {
                 var place = results[i];
-                place.marker.setMap(null);
+                place.marker.setVisible(false);
             };
 
             for (i = 0; i < retained.length; i++) {
                 var place = retained[i];
-                place.marker.setMap(map);
+                place.marker.setVisible(true);
             };
 
             return results;
@@ -209,44 +211,27 @@ initialize = function () {
 
             for (i = 0; i < results.length; i++) {
                 var place = results[i];
-                place.marker.setMap(null);
+                place.marker.setVisible(false);
             };
 
             for (i = 0; i < retained.length; i++) {
                 var place = retained[i];
-                place.marker.setMap(map);
+                place.marker.setVisible(true);
             };
 
             return results;
         }, self);
 
         self.clickMarker = function (place) {
+            closeAllBoxes();
             map.panTo(place.position);
             place.marker.setAnimation(google.maps.Animation.BOUNCE);
             setTimeout(function () { stopBounce(place); }, 4000);
-        }
-
-        self.showMarkers = function () {
-            for (i = 0; i < self.filteredItems().length; i++) {
-                var marker = self.filteredItems()[i].marker;
-                marker.setMap(map);
-            };
-        }
-
-        self.hideMarkerDeals = function () {
-            for (i = 0; i < self.couponList().length; i++) {
-                var marker = self.couponList()[i].marker;
-                marker.setVisible(false);
-            };
-            for (i = 0; i < self.filteredDeals().length; i++) {
-                var markerb = self.filteredDeals()[i].marker;
-                markerb.setVisible(true);
-            };
-        }
+        };
 
         function stopBounce(place) {
             place.marker.setAnimation(null);
-        }
+        };
 
 
         function callback(results, status) {
@@ -258,9 +243,9 @@ initialize = function () {
                         placeId: place.place_id
                     };
                     service.getDetails(search, callbackDetails);
-                }
-            }
-        }
+                };
+            };
+        };
 
         function callbackDetails(place, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -293,10 +278,8 @@ initialize = function () {
                 position: place.position,
                 animation: google.maps.Animation.DROP,
                 icon: place.icon
-
-
             });
-            //marker.setVisible(false);
+            marker.setVisible(false);
             return marker;
             markers.push(marker);
         }
@@ -343,7 +326,7 @@ initialize = function () {
                 getDeals();
                 service.textSearch(request, callback);
                 map.fitBounds(bounds);
-                map.setZoom(15);
+                map.setZoom(14);
             });
             google.maps.event.addListener(map, 'bounds_changed', function () {
                 var bounds = map.getBounds();
@@ -351,10 +334,29 @@ initialize = function () {
             });
         }
 
+        function getSqoot() {
+
+            // load wikipedia data
+            var sqootUrl = 'http://api.sqoot.com/v2/deals&location=10013?API_KEY=sq7r8u';
+            //var wikiRequestTimeout = setTimeout(function () {
+            //    $wikiElem.text("failed to get wikipedia resources");
+            //}, 8000);
+
+            $.ajax({
+                url: sqootUrl,
+                dataType: "jsonp",
+                //jsonp: "callback",
+                success: function (response) {
+                    console.log(response);
+
+                    // clearTimeout(wikiRequestTimeout);
+                }
+            });
+        }
         function getDeals() {
 
             // load wikipedia data
-            var couponsUrl = 'http://api.8coupons.com/v1/getdeals?key=aa790cd6591f41e79107106f31e1f7ac7e49e42b87087d2b01ad22925d563beb6e24f8a729609425014d48c126143c40&zip=07310&mileradius=2&limit=8';
+            var couponsUrl = 'http://api.8coupons.com/v1/getdeals?key=aa790cd6591f41e79107106f31e1f7ac7e49e42b87087d2b01ad22925d563beb6e24f8a729609425014d48c126143c40&zip=10013&mileradius=2&limit=8';
             //var wikiRequestTimeout = setTimeout(function () {
             //    $wikiElem.text("failed to get wikipedia resources");
             //}, 8000);
@@ -395,6 +397,7 @@ initialize = function () {
                 place.position = new google.maps.LatLng(place.myLat, place.myLng);
                 place.icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
                 place.marker = createSearchMarker(place);
+                place.marker.setVisible(true);
                 place.content = '<div id="infobox"><img class="photo" src="' + place.photo + '"><p>' + place.name + '</p></div>'
                 self.impPlaceList.push(new Place(place));
                 markerListener(place);
@@ -415,10 +418,6 @@ initialize = function () {
                 marker.setVisible(false);
             }
         }
-
-        // google.maps.event.addDomListener(window, 'load', initialize);
-
-
     }
 
     ko.applyBindings(new ViewModel());
