@@ -8,8 +8,8 @@
     <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
-    <input id="search-input" class="controls" type="text" placeholder="restaurant">
-    <div style ="width: 100%; height: 100%">
+    <input id="search-input" class="controls" type="text" placeholder="start typing to search"><input id="search" class="controls" data-bind="textInput: filter" placeholder="type to filter results" />
+    <div id="content">
         <div id="map-canvas">
         </div>
 
@@ -23,7 +23,7 @@
         </div>
         <div id="list">
             <h2 class="title">Search Results</h2>
-            <p class="title"><input class="search" data-bind="textInput: filter" placeholder="type to filter results" /></p>
+           
             <ul data-bind="foreach: filteredItems">
                 <li data-bind="click: $parent.clickMarker">
                     <p class="name" data-bind="text: name"></p>
@@ -33,13 +33,41 @@
         </div>
         <div id="couponList">
             <h2 id="dealTitle" class="title">Local Deals</h2>
-            <p class="title"><input class="search" data-bind="value: filterDeal, valueUpdate: 'afterkeydown'" placeholder="type to filter results" /></p>
             <ul data-bind="foreach: filteredDeals">
                 <li data-bind="click: $parent.clickMarker">
                     <p class="name" data-bind="text: name"></p>
                     <p data-bind="text: address"></p>
                 </li>
             </ul>
+        </div>
+        <p id ="filterResults" class="title"><input class="search" data-bind="textInput: filter" placeholder="type to filter results" /></p>
+        <div id="listResponsive">
+            <div id="coupons">
+                <h2 id="dealTitle" class="title">Local Deals</h2>
+                <ul data-bind="foreach: filteredDeals">
+                    <li data-bind="click: $parent.clickMarker">
+                        <p class="name" data-bind="text: name"></p>
+                        <p data-bind="text: address"></p>
+                    </li>
+                </ul>
+            </div>
+            <div id="places">
+                <h2 class="title">Search Results</h2>
+                <ul data-bind="foreach: filteredItems">
+                    <li data-bind="click: $parent.clickMarker">
+                        <p class="name" data-bind="text: name"></p>
+                        <p data-bind="text: address"></p>
+                    </li>
+                </ul>
+            </div>
+            <div id="important">
+                <h2 class="title">Important Locations</h2>
+                <ul data-bind="foreach: impPlaceList">
+                    <li data-bind="click: $parent.clickMarker">
+                        <p class="name" data-bind="text: name"></p>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <script src="js/lib/jquery.min.js"></script>

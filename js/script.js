@@ -123,6 +123,8 @@ initialize = function () {
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(list);
         var input = (document.getElementById('search-input'));
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        var search = (document.getElementById('search'));
+        map.controls[google.maps.ControlPosition.TOP_LEFT].push(search);
         var searchBox = new google.maps.places.SearchBox(
           (input));
 
@@ -153,7 +155,7 @@ initialize = function () {
 
         self.filteredDeals = ko.computed({
             read: function () {
-                var filter = this.filterDeal().toLowerCase();
+                var filter = this.filter().toLowerCase();
                 if (!filter) {
                     return self.couponList();
                 } else {

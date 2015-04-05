@@ -1,22 +1,21 @@
-﻿html, body, #map-canvas {
+﻿html, body {
         margin: 0;
         padding: 0;
         height: 100%;
         width: 100%;
     }
-.map { height:300px; width:300px; }
-#list {
-    background-color: #fff;
-    font-family: Roboto;
-    font-size: 11px;
-    font-weight: 300;
-    margin-left: 12px;
-    padding: 0px;
-    overflow: auto;
-    width: 20%%;
-    height: 60%;
-    border-radius: 10px;
+
+#content {
+     height: 100%;
+        width: 100%;
 }
+#map-canvas {
+     margin: 0 0 10px 0;
+        padding: 0;
+        height: 100%;
+        width: 100%;
+}
+
 /* Let's get this party started */
 ::-webkit-scrollbar {
     width: 12px;
@@ -42,8 +41,22 @@
 	background: rgba(255,0,0,0.4); 
 }
 
+#list {
+    display:none;
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 11px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0;
+    overflow: auto;
+    width: 20%;
+    height: 50%;
+    border-radius: 10px;
+}
 
 #impList {
+    display:none;
     background-color: #fff;
     border: 3px solid red;
     font-family: Roboto;
@@ -52,12 +65,13 @@
     margin-left: 12px;
     padding: 0px;
     overflow: auto;
-    width: 20%%;
+    width: 20%;
     height: 35%;
     border-radius: 10px;
 }
 
 #couponList {
+    display:none;
     background-color: #fff;
     font-family: Roboto;
     font-size: 10px;
@@ -65,11 +79,28 @@
     margin-left: 12px;
     padding: 0px;
     overflow: auto;
-    width: 20%%;
-    height: 60%;
+    width: 20%;
+    height: 50%;
     border-radius: 10px;
 }
+
+#coupons, #important, #places {
+    width:30%;
+    margin:0px auto;
+}
+
+#listResponsive {
+    display:flex;
+    overflow: auto;
+    margin: 5px 0 15px 0;
+    font-size: 12px;
+    width:95%;
+    height:50%;
+    padding: 15px, 3px, 15px, 3px;
+}
+
 ul {
+    list-style:none;
     cursor:pointer;
     padding: 0;
     margin: 0;
@@ -103,18 +134,18 @@ li:hover {
     max-width: 200px;
     max-height: 200px;
 }
-.search {
+#search {
+    display:none;
     text-align:center;
         background-color: #fff;
         font-family: Roboto;
-        font-size: 13px;
+        font-size: 16px;
         font-weight: 300;
-        
         text-overflow: ellipsis;
-        
         border-radius: 10px;
+        margin-left: 30px;
+        width: 8%;
       }
-
 
   .controls {
         margin-top: 16px;
@@ -135,7 +166,7 @@ li:hover {
         margin-left: 12px;
         padding: 0 11px 0 13px;
         text-overflow: ellipsis;
-        width: 200px;
+        width: 18%;
         border-radius: 15px;
       }
 
@@ -175,3 +206,11 @@ li:hover {
     max-width: none; 
 }
 
+@media only screen and (min-width : 1200px) {
+#list, #impList, #couponList, #search {
+    display: inline;
+}
+#listResponsive, #filterResults {
+    display: none;
+}
+}
