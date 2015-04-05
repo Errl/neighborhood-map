@@ -134,7 +134,7 @@ initialize = function () {
             query: 'food'
         };
 
-        getDeals();
+        getSqoot('restaurant');
         service.textSearch(request, callback);
         searchListener(searchBox);
         setImpPlaces();
@@ -265,7 +265,7 @@ initialize = function () {
                     place.photo = place.photos[0].getUrl({ 'maxWidth': 200, 'maxHeight': 200 });
                 }
                 place.content = '<div id="infobox"><img src="' + place.photo + '"><p>' + place.name + '</p><p>' + place.phone + '</p><p>' + place.address + '</p><p> Avg. Rating:' + place.rating + '</p><p>' + place.review + '</p></div>'
-                place.icon = 'http://maps.google.com/mapfiles/ms/icons/red-dot.png'
+                place.icon = 'http://google.com/mapfiles/ms/micons/red-pushpin.png'
                 place.marker = createSearchMarker(place);
                 self.placeList.push(new Place(place));
                 markerListener(place);
@@ -323,7 +323,7 @@ initialize = function () {
                 removeMarkers(self.couponList)
                 self.placeList.removeAll();
                 self.couponList.removeAll();
-                getDeals();
+                getSqoot(input);
                 service.textSearch(request, callback);
                 map.fitBounds(bounds);
                 map.setZoom(14);
@@ -334,68 +334,51 @@ initialize = function () {
             });
         }
 
-        function getSqoot() {
-
+        function getSqoot(input) {
             // load wikipedia data
-            var sqootUrl = 'http://api.sqoot.com/v2/deals&location=10013?API_KEY=sq7r8u';
-            //var wikiRequestTimeout = setTimeout(function () {
-            //    $wikiElem.text("failed to get wikipedia resources");
-            //}, 8000);
+            var sqootUrl = 'http://api.sqoot.com/v2/deals?api_key=sq7r8u&query=' + input + '&location=10013&radius=1';
+            var sqootRequestTimeout = setTimeout(function () {
+              $('#dealTitle').text("failed to get wikipedia resources");
+            }, 8000);
 
             $.ajax({
                 url: sqootUrl,
                 dataType: "jsonp",
                 //jsonp: "callback",
                 success: function (response) {
-                    console.log(response);
+                    var dealList = response['deals'];
 
-                    // clearTimeout(wikiRequestTimeout);
-                }
-            });
-        }
-        function getDeals() {
-
-            // load wikipedia data
-            var couponsUrl = 'http://api.8coupons.com/v1/getdeals?key=aa790cd6591f41e79107106f31e1f7ac7e49e42b87087d2b01ad22925d563beb6e24f8a729609425014d48c126143c40&zip=10013&mileradius=2&limit=8';
-            //var wikiRequestTimeout = setTimeout(function () {
-            //    $wikiElem.text("failed to get wikipedia resources");
-            //}, 8000);
-
-            $.ajax({
-                url: couponsUrl,
-                dataType: "jsonp",
-                //jsonp: "callback",
-                success: function (response) {
-                    for (var i = 0; i < response.length; i++) {
-                        var coupon = response[i];
-                        getDealPlaces(coupon);
+                    for (var i = 0; i < dealList.length; i++) {
+                        deal = dealList[i];
+                        getSqootPlaces(deal);
                     };
-
-                    // clearTimeout(wikiRequestTimeout);
+                    clearTimeout(sqootRequestTimeout);
                 }
             });
         }
 
-        function getDealPlaces(coupon) {
-            var lat = coupon.lat;
-            var lng = coupon.lon;
-            coupon.position = new google.maps.LatLng(lat, lng);
-            var title = coupon.name;
-            coupon.icon = 'http://maps.google.com/mapfiles/ms/icons/orange-dot.png';
-            coupon.photo = coupon.showImageStandardSmall;
-            coupon.address = coupon.address + '<br/>' + coupon.city + ', ' + coupon.state;
-
-            coupon.marker = createSearchMarker(coupon);
-            coupon.content = '<div id="infobox"><img src="' + coupon.photo + '"><p>' + coupon.name + '</p><p>' + coupon.phone + '</p><p>' + coupon.address + '</p><p> Coupon:<br/>' + coupon.dealTitle + '</p><p> Savings: $' + coupon.dealSavings + '</p></div>';
-            self.couponList.push(new Place(coupon));
-            markerListener(coupon);
+        function getSqootPlaces(deals) {
+            var lat = deals.deal.merchant.latitude;
+            var lng = deals.deal.merchant.longitude;
+            deal.position = new google.maps.LatLng(lat, lng);
+            deal.icon = 'http://maps.google.com/mapfiles/kml/pal2/icon61.png';
+            deal.photo = deals.deal.image_url;
+            deal.addressFormatted = deals.deal.merchant.address + '<br/>' + deals.deal.merchant.locality + ', ' + deals.deal.merchant.region;
+            deal.address = deals.deal.merchant.address + '  ' + deals.deal.merchant.locality + ', ' + deals.deal.merchant.region;
+            deal.dealTitle = deals.deal.short_title;
+            deal.name = deals.deal.merchant.name;
+            deal.marker = createSearchMarker(deal);
+            deal.url = deals.deal.url;
+            deal.content = '<div id="infobox"><img class="markerImg" src="' + deal.photo + '"><p>' + deal.name + '</p><p>' + deal.addressFormatted + '</p><p> Coupon:<br/>' + deal.dealTitle + '</p><li><a class="dealUrl" href="' + deal.url + '">' + deal.url + '</a></li></div>';
+            self.couponList.push(new Place(deal));
+            markerListener(deal);
         }
 
         function setImpPlaces() {
             for (i = 0; i < locations.length; i++) {
                 var place = locations[i];
                 place.position = new google.maps.LatLng(place.myLat, place.myLng);
-                place.icon = 'http://maps.google.com/mapfiles/ms/icons/blue-dot.png',
+                place.icon = 'http://google.com/mapfiles/ms/micons/flag.png',
                 place.marker = createSearchMarker(place);
                 place.marker.setVisible(true);
                 place.content = '<div id="infobox"><img class="photo" src="' + place.photo + '"><p>' + place.name + '</p></div>'

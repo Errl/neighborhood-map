@@ -95,6 +95,14 @@ li:hover {
     background-color: #0099FF;
 }
 
+.dealUrl {
+    color:#fff;
+}
+
+.markerImg{
+    max-width: 200px;
+    max-height: 200px;
+}
 .search {
     text-align:center;
         background-color: #fff;
