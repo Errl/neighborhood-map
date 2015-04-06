@@ -5,7 +5,6 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Neighborhood-Map</title>
-    <link href="css/style.css" rel="stylesheet" type="text/css">
 </head>
 <body>
     <input id="search-input" class="controls" type="text" placeholder="start typing to search"><input id="search" class="controls" data-bind="textInput: filter" placeholder="type to filter results" />
@@ -73,8 +72,24 @@
             </div>
         </div>
     </div>
-    <script src="js/lib/jquery.min.js"></script>
-    <script src="js/lib/knockout-3.2.0.js"></script>
-    <script src="js/script.js"></script>
+    <script async src="js/lib/jquery.min.js"></script>
+    <script async src="js/lib/knockout-3.2.0.js"></script>
+    <script async src="js/script.js"></script>
+    <script>
+    var cb = function () {
+        var links = ['css/normalize.css', 'css/style.css'];
+        for (var i = 0; i < links.length; i++) {
+            var l = document.createElement('link');
+            l.rel = 'stylesheet';
+            l.href = links[i];
+            var h = document.getElementsByTagName('head')[0];
+            h.parentNode.insertBefore(l, h);
+        }
+    };
+    var raf = requestAnimationFrame || mozRequestAnimationFrame ||
+            webkitRequestAnimationFrame || msRequestAnimationFrame;
+    if (raf) raf(cb);
+    else window.addEventListener('load', cb);
+    </script>
 </body>
 </html>
