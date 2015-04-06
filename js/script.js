@@ -1,61 +1,71 @@
+//list of pre-populated important places
 var locations = [
     {
         name: '9/11 Tribute Center',
         myLat: 40.709784,
         myLng: -74.012432,
-        photo: 'img/911tribute.jpg'
+        photo: 'img/911tribute.jpg',
+        address: '120 Liberty St, New York, NY 10006 (212) 393-9160'
     },
 
     {
         name: 'NY Stock Exchange',
         myLat: 40.707096,
         myLng: -74.010675,
-        photo: 'img/stockexchange.jpg'
+        photo: 'img/stockexchange.jpg',
+        address: '11 Wall St, New York, NY 10005 (212) 656-3000'
     },
 
     {
         name: 'The National September 11 Memorial',
         myLat: 40.713160,
         myLng: -74.013365,
-        photo: 'img/911 memorial.jpg'
+        photo: 'img/911 memorial.jpg',
+        address: '10007, 80 Greenwich St, New York, NY 10006'
     },
 
      {
          name: 'South Street Seaport',
          myLat: 40.705856,
          myLng: -74.001900,
-         photo: 'img/seaport.jpg'
+         photo: 'img/seaport.jpg',
+         address: 'New York, NY 10038 (212) 732-8257'
      },
 
      {
          name: 'NY City Hall',
          myLat: 40.713160,
          myLng: -74.006389,
-         photo: 'img/cityhall.jpg'
+         photo: 'img/cityhall.jpg',
+         address: 'City Hall Park New York, NY (212) 639-9675'
      },
 
      {
          name: 'US Post Office',
-         myLat: 40.716313,
-         myLng: -74.036905,
-         photo: 'img/postoffice.jpg'
+         myLat: 40.720497,
+         myLng: -74.004107,
+         photo: 'img/postoffice.jpg',
+         address: '350 Canal St New York, NY 10013'
      }
 ]
 
-
+//declare the place object
 var Place = function (data) {
     this.name = ko.observable(data.name);
     this.myLat = data.myLat;
     this.myLng = data.myLng;
     this.marker = data.marker;
     this.position = data.position;
-    this.address =ko.observable(data.address);
+    this.address = ko.observable(data.address);
     this.photo = data.photo;
     this.content = data.content;
     this.icon = data.icon;
     this.type = data.types;
 }
+//global map variable
 var map;
+
+//These next few functions load google maps and its dependency infobox.js asynchronous.
 function addScript(url, callback) {
     var script = document.createElement('script');
     if (callback) script.onload = callback;
@@ -74,9 +84,11 @@ function mapsApiReady() {
 
 window.onload = loadMapsAPI;
 
+//the initialize function gets called after the js files above are loaded
 initialize = function () {
+    //this just hold a variable with our map centerpoint.
     var newport = new google.maps.LatLng(40.715369, -73.998259);
-
+    //Here we set our map options and any controls we want visible.
     var mapOptions = {
         zoom: 14,
         center: newport,
@@ -101,20 +113,25 @@ initialize = function () {
             position: google.maps.ControlPosition.LEFT_TOP
         }
     };
+    //this line created the map
     map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
-
+    //Below we begin our ViewModel which will bind all the map stuff to the view. 
     var ViewModel = function () {
         var self = this;
+        //array to hold markers
         var markers = [];
+        //arrayinfoboxes to hold 
         var infoBoxes = [];
+        //arrays to hold our different lists
         self.placeList = ko.observableArray([]);
         self.impPlaceList = ko.observableArray([]);
         self.searchTerm = ko.observable('restaurant');
         self.couponList = ko.observableArray([]);
         self.filter = ko.observable('');
-        self.filterDeal = ko.observable('');
-
+        //Now we need to set and place our map controls on the map.
+        var responsive = (document.getElementById('responsive'));
+        map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(responsive);
         var couponList = (document.getElementById('couponList'));
         map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(couponList);
         var impList = (document.getElementById('impList'));
@@ -123,24 +140,26 @@ initialize = function () {
         map.controls[google.maps.ControlPosition.RIGHT_BOTTOM].push(list);
         var input = (document.getElementById('search-input'));
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+        //Here we create a searchbox that is using google places api autocomplete
         var search = (document.getElementById('search'));
         map.controls[google.maps.ControlPosition.TOP_LEFT].push(search);
         var searchBox = new google.maps.places.SearchBox(
           (input));
-
+        //this creates a new  google places service. 
         var service = new google.maps.places.PlacesService(map);
-
+        //Now we set our search options that will populate the page on initial load.
         var request = {
             location: newport,
             radius: 2500,
             query: 'food'
         };
-
+        //get all lists and set them on the map
         getSqoot('restaurant');
         service.textSearch(request, callback);
         searchListener(searchBox);
         setImpPlaces();
 
+        //This is a computed observable that we will use to populate our list. This computed observable is waht filters out the list based on user input.
         self.filteredItems = ko.computed(function () {
             var filter = this.filter().toLowerCase();
             if (!filter) {
@@ -152,7 +171,7 @@ initialize = function () {
                 });
             }
         }, self);
-
+        //Here we do the same thing as above but for our local deals list.
         self.filteredDeals = ko.computed({
             read: function () {
                 var filter = this.filter().toLowerCase();
@@ -168,6 +187,8 @@ initialize = function () {
             }
         }, self);
 
+        //This is the  observable function I used to display and hide markers as the user is filtering the results. This needs improvement. It seems like it is too heavy to perform a simple task. I am thinking the correct way would 
+        //be to create a custom binding directly to the view that will hold the markers, but I could not get that to work. 
         self.togglePlacesMarkers = ko.dependentObservable(function () {
             //find out the categories that are missing from uniqueNames
             var differences = ko.utils.compareArrays(self.placeList(), self.filteredItems());
@@ -223,7 +244,7 @@ initialize = function () {
 
             return results;
         }, self);
-
+        //this is the function that is called when user clicks on a place in the list. It pans the map to the selected marker. I set the annimation of the marker to bounce. To get it to stop bouncing I used the setTimeout function to stop bouncing after 4 seconds.
         self.clickMarker = function (place) {
             closeAllBoxes();
             map.panTo(place.position);
@@ -235,7 +256,8 @@ initialize = function () {
             place.marker.setAnimation(null);
         };
 
-
+        //When we place a search with google maps, the results are returned to this callback function.
+        //What we are doing here is getting the placeId from the returned results, and pass this Id into google places detailed search, which will return all the detailed results of each place.
         function callback(results, status) {
             var service = new google.maps.places.PlacesService(map);
             if (status == google.maps.places.PlacesServiceStatus.OK) {
@@ -245,10 +267,11 @@ initialize = function () {
                         placeId: place.place_id
                     };
                     service.getDetails(search, callbackDetails);
-                };
-            };
-        };
-
+                }
+            }
+        }
+        //This is the function that gets the results from the place detail search above. Once we get the results we need to parsse it and set some properties before we create the place object. I alos set icon and content here, which hold the info  for the marker.
+        //Then we create a marker and hold the marker in the place.marker object. Then we push the place to the placeList and call the markerListener function, which sets an event listener on each marker.
         function callbackDetails(place, status) {
             if (status == google.maps.places.PlacesServiceStatus.OK) {
                 place.address = place.formatted_address;
@@ -256,12 +279,6 @@ initialize = function () {
                 place.position = place.geometry.location;
                 if (place.reviews) {
                     place.review = place.reviews[0].text;
-                    //for (i = 0; i > place.reviews.length; i++) {
-                    //    var fullReviews = place.reviews[i];
-                    //var rev = fullReviews.aspect[0].rating;
-                    //var tev = fullReviews.aspect[0].type;
-                    //console.log(rev + tev);
-                    //}
                 }
                 if (place.photos) {
                     place.photo = place.photos[0].getUrl({ 'maxWidth': 200, 'maxHeight': 200 });
@@ -273,7 +290,7 @@ initialize = function () {
                 markerListener(place);
             }
         }
-
+        //Here we create the marker for each place and push each marker to the markers array.
         function createSearchMarker(place) {
             var marker = new google.maps.Marker({
                 map: map,
@@ -285,7 +302,7 @@ initialize = function () {
             return marker;
             markers.push(marker);
         }
-
+        //This is the marker listener that we called earlier. THis is the function that opens up the infobox when a marker is clicked.
         function markerListener(place) {
             google.maps.event.addListener(place.marker, 'click', function () {
                 closeAllBoxes();
@@ -309,7 +326,8 @@ initialize = function () {
                 setTimeout(function () { infoBox.close(); }, 10000);
             });
         }
-
+        //This is the function that creates an event listener when user types in the searchbox. Earlier we used the google places searchbox for autocomplete results. But here I Decided to run the search with google maps api instead of the palces library. 
+        //basically I preferd the autocomplete of google places and the search results of google maps text search. 
         function searchListener(searchBox) {
             var service = new google.maps.places.PlacesService(map);
 
@@ -335,18 +353,24 @@ initialize = function () {
                 searchBox.setBounds(bounds);
             });
         }
-
+        //This function will launch the Ajax request to the sqoot server to get local deals.
         function getSqoot(input) {
             // load wikipedia data
             var sqootUrl = 'http://api.sqoot.com/v2/deals?api_key=sq7r8u&query=' + input + '&location=10013&radius=1';
             var sqootRequestTimeout = setTimeout(function () {
-              $('#dealTitle').text("failed to get wikipedia resources");
+                $('#dealTitle').text("failed to get wikipedia resources");
             }, 8000);
 
             $.ajax({
                 url: sqootUrl,
                 dataType: "jsonp",
                 //jsonp: "callback",
+                beforeSend: function () {
+                    $('#image').show();
+                },
+                complete: function () {
+                    $('#image').hide();
+                },
                 success: function (response) {
                     var dealList = response['deals'];
 
@@ -358,7 +382,7 @@ initialize = function () {
                 }
             });
         }
-
+        //This function takes the results from the ajax call, parses it appropriately andcreates the list of local deals.
         function getSqootPlaces(deals) {
             var lat = deals.deal.merchant.latitude;
             var lng = deals.deal.merchant.longitude;
@@ -375,7 +399,7 @@ initialize = function () {
             self.couponList.push(new Place(deal));
             markerListener(deal);
         }
-
+        //This function takes our list of locations we created with important places and creates the proper place object with each location and creates markers and impPlaces list.
         function setImpPlaces() {
             for (i = 0; i < locations.length; i++) {
                 var place = locations[i];
@@ -383,21 +407,21 @@ initialize = function () {
                 place.icon = 'http://google.com/mapfiles/ms/micons/flag.png',
                 place.marker = createSearchMarker(place);
                 place.marker.setVisible(true);
-                place.content = '<div id="infobox"><img class="photo" src="' + place.photo + '"><p>' + place.name + '</p></div>'
+                place.content = '<div id="infobox"><img class="photo" src="' + place.photo + '"><p>' + place.name + '</p><p>' + place.address + '</p></div>'
                 self.impPlaceList.push(new Place(place));
                 markerListener(place);
             }
         }
 
         function closeAllBoxes() {
-            //remove all markers from map
+            //close all infoboxes on map
             for (var i = 0; i < infoBoxes.length; i++) {
                 infoBoxes[i].close();
             }
         }
 
         function removeMarkers(list) {
-            //remove all markers from map
+            //Hide's all markers in list
             for (var i = 0; i < list().length; i++) {
                 var marker = list()[i].marker;
                 marker.setVisible(false);

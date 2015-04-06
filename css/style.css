@@ -1,19 +1,20 @@
 ﻿html, body {
-        margin: 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
-    }
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
 
 #content {
-     height: 100%;
-        width: 100%;
+    height: 100%;
+    width: 100%;
 }
+
 #map-canvas {
-     margin: 0 0 10px 0;
-        padding: 0;
-        height: 100%;
-        width: 100%;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
 }
 
 /* Let's get this party started */
@@ -22,27 +23,33 @@
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
- 
+
 /* Track */
 ::-webkit-scrollbar-track {
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
+    -moz-border-radius: 10px;
     -webkit-border-radius: 10px;
     border-radius: 10px;
 }
- 
+
 /* Handle */
 ::-webkit-scrollbar-thumb {
     -webkit-border-radius: 10px;
     border-radius: 10px;
-    background: rgba(255,0,0,0.8); 
-    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
-}
-::-webkit-scrollbar-thumb:window-inactive {
-	background: rgba(255,0,0,0.4); 
+    background: rgba(255,0,0,0.8);
+    -moz-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.5);
+    box-shadow: inset 0 0 6px rgba(0,0,0,0.3);
 }
 
+    ::-webkit-scrollbar-thumb:window-inactive {
+        background: rgba(255,0,0,0.4);
+    }
+
 #list {
-    display:none;
+    display: none;
     background-color: #fff;
     font-family: Roboto;
     font-size: 11px;
@@ -52,70 +59,87 @@
     overflow: auto;
     width: 20%;
     height: 50%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
 }
 
 #impList {
-    display:none;
+    display: none;
     background-color: #fff;
     border: 3px solid red;
     font-family: Roboto;
     font-size: 11px;
     font-weight: 300;
     margin-left: 12px;
-    padding: 0px;
+    padding: 0;
     overflow: auto;
     width: 20%;
     height: 35%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
 }
 
 #couponList {
-    display:none;
+    display: none;
     background-color: #fff;
     font-family: Roboto;
     font-size: 10px;
     font-weight: 300;
     margin-left: 12px;
-    padding: 0px;
+    padding: 0;
     overflow: auto;
     width: 20%;
     height: 50%;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
     border-radius: 10px;
 }
 
 #coupons, #important, #places {
-    width:30%;
-    margin:0px auto;
+    width: 100%;
+    margin: 0 auto;
+}
+
+#responsive {
+    overflow: auto;
+    height: 35%;
+    background-color: rgba(237, 226, 226, 0.77);
+    font-size: 12px;
+    width: 95%;
+    padding: 15px, 3px, 0, 3px;
+      /* We first create a flex layout context */
+ 
 }
 
 #listResponsive {
-    display:flex;
-    overflow: auto;
-    margin: 5px 0 15px 0;
-    font-size: 12px;
-    width:95%;
-    height:50%;
-    padding: 15px, 3px, 15px, 3px;
+   width: 90%;
+    margin: 5px 5px 0 5px;
+      display: -webkit-box;      /* OLD - iOS 6-, Safari 3.1-6 */
+  display: -moz-box;         /* OLD - Firefox 19- (buggy but mostly works) */
+  display: -ms-flexbox;      /* TWEENER - IE 10 */
+  display: -webkit-flex;     /* NEW - Chrome */
+  display: flex;             /* NEW, Spec - Opera 12.1, Firefox 20+ */
 }
 
 ul {
-    list-style:none;
-    cursor:pointer;
+    list-style: none;
+    cursor: pointer;
     padding: 0;
     margin: 0;
 }
 
 li {
     padding-left: 0;
-    margin: 0; 
-}
-
-li p {
-    text-align: center;
-    padding: 5px;
     margin: 0;
 }
+
+    li p {
+        text-align: center;
+        padding: 5px;
+        margin: 0;
+    }
 
 p.name {
     font-size: 13px;
@@ -127,90 +151,105 @@ li:hover {
 }
 
 .dealUrl {
-    color:#fff;
+    color: #fff;
 }
 
-.markerImg{
+.markerImg {
     max-width: 200px;
     max-height: 200px;
 }
+
 #search {
-    display:none;
-    text-align:center;
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 16px;
-        font-weight: 300;
-        text-overflow: ellipsis;
-        border-radius: 10px;
-        margin-left: 30px;
-        width: 8%;
-      }
+    text-align: center;
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 16px;
+    font-weight: 300;
+    text-overflow: ellipsis;
+    -webkit-border-radius: 10px;
+    -moz-border-radius: 10px;
+    border-radius: 10px;
+    margin-left: 30px;
+    width: 15%;
+}
 
-  .controls {
-        margin-top: 16px;
-        border: 1px solid transparent;
-        border-radius: 2px 0 0 2px;
-        box-sizing: border-box;
-        -moz-box-sizing: border-box;
-        height: 32px;
-        outline: none;
-        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-      }
+.controls {
+    margin-top: 16px;
+    border: 1px solid transparent;
+    border-radius: 2px 0 0 2px;
+    box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    height: 32px;
+    outline: none;
+    -webkit-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    -moz-box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
 
-      #search-input {
-        background-color: #fff;
-        font-family: Roboto;
-        font-size: 15px;
-        font-weight: 300;
-        margin-left: 12px;
-        padding: 0 11px 0 13px;
-        text-overflow: ellipsis;
-        width: 18%;
-        border-radius: 15px;
-      }
+#search-input {
+    background-color: #fff;
+    font-family: Roboto;
+    font-size: 15px;
+    font-weight: 300;
+    margin-left: 12px;
+    padding: 0 11px 0 13px;
+    text-overflow: ellipsis;
+    width: 18%;
+    -webkit-border-radius: 15px;
+    -moz-border-radius: 15px;
+    border-radius: 15px;
+}
 
-      #search-input:focus {
+    #search-input:focus {
         border-color: #4d90fe;
-      }
+    }
 
-      .pac-container {
-        font-family: Roboto;
-      }
+.pac-container {
+    font-family: Roboto;
+}
 
 .infobox-wrapper {
-    display:none;
+    display: none;
 }
+
 #infobox {
-    border:2px solid black;
+    border: 2px solid black;
     margin-top: 8px;
-    background:#333;
-    color:#FFF;
-    font-family:Arial, Helvetica, sans-serif;
-    font-size:12px;
+    background: #333;
+    color: #FFF;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 12px;
     padding: .5em 1em;
     -webkit-border-radius: 2px;
     -moz-border-radius: 2px;
     border-radius: 2px;
-    text-shadow:0 -1px #000000;
-    -webkit-box-shadow: 0 0  8px #000;
+    text-shadow: 0 -1px #000000;
+    -webkit-box-shadow: 0 0 8px #000;
+    -moz-box-shadow: 0 0 8px #000;
     box-shadow: 0 0 8px #000;
 }
-.title {
-    text-align:center;
-    color:cadetblue;
 
+.title {
+    text-align: center;
+    color: cadetblue;
 }
 
 .gmnoprint img {
-    max-width: none; 
+    max-width: none;
 }
 
 @media only screen and (min-width : 1200px) {
-#list, #impList, #couponList, #search {
-    display: inline;
+    #list, #impList, #couponList, #search {
+        display: inline;
+    }
+
+    #responsive {
+        display: none;
+    }
 }
-#listResponsive, #filterResults {
-    display: none;
-}
+
+@media all and (max-width: 666px) {
+  #listResponsive {
+      display: inline;
+  }
 }
