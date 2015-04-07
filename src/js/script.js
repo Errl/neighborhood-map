@@ -1,3 +1,4 @@
+"use strict";
 //list of pre-populated important places
 var locations = [
     {
@@ -55,7 +56,7 @@ var locations = [
           photo: 'img/tribeca.jpg',
           address: '2 Avenue of the Americas, New York, NY 10013, United States tribecagrand.com (212) 519-6600'
       }
-]
+];
 
 //declare the place object
 var Place = function (data) {
@@ -69,10 +70,10 @@ var Place = function (data) {
     this.content = data.content;
     this.icon = data.icon;
     this.type = data.types;
-}
+};
 //global map variable
 var map;
-
+var i;
 //These next few functions load google maps and its dependency infobox.js asynchronous.
 function addScript(url, callback) {
     var script = document.createElement('script');
@@ -93,7 +94,7 @@ function mapsApiReady() {
 window.onload = loadMapsAPI;
 
 //the initialize function gets called after the js files above are loaded
-initialize = function () {
+ var initialize = function () {
     //this just hold a variable with our map centerpoint.
     var newport = new google.maps.LatLng(40.715369, -73.998259);
     //Here we set our map options and any controls we want visible.
@@ -124,12 +125,12 @@ initialize = function () {
     //this line created the map
     map = new google.maps.Map(document.getElementById('map-canvas'),
         mapOptions);
-    //Below we begin our ViewModel which will bind all the map stuff to the view. 
+    //Below we begin our ViewModel which will bind all the map stuff to the view.
     var ViewModel = function () {
         var self = this;
         //array to hold markers
         var markers = [];
-        //arrayinfoboxes to hold 
+        //arrayinfoboxes to hold
         var infoBoxes = [];
         //arrays to hold our different lists
         self.placeList = ko.observableArray([]);
@@ -215,12 +216,12 @@ initialize = function () {
             for (i = 0; i < results.length; i++) {
                 var place = results[i];
                 place.marker.setVisible(false);
-            };
+            }
 
             for (i = 0; i < retained.length; i++) {
-                var place = retained[i];
-                place.marker.setVisible(true);
-            };
+                var place2 = retained[i];
+                place2.marker.setVisible(true);
+            }
 
             return results;
         }, self);
@@ -243,12 +244,12 @@ initialize = function () {
             for (i = 0; i < results.length; i++) {
                 var place = results[i];
                 place.marker.setVisible(false);
-            };
+            }
 
             for (i = 0; i < retained.length; i++) {
-                var place = retained[i];
-                place.marker.setVisible(true);
-            };
+                var place2 = retained[i];
+                place2.marker.setVisible(true);
+            }
 
             return results;
         }, self);
@@ -262,7 +263,7 @@ initialize = function () {
 
         function stopBounce(place) {
             place.marker.setAnimation(null);
-        };
+        }
 
         //When we place a search with google maps, the results are returned to this callback function.
         //What we are doing here is getting the placeId from the returned results, and pass this Id into google places detailed search, which will return all the detailed results of each place.
@@ -291,8 +292,8 @@ initialize = function () {
                 if (place.photos) {
                     place.photo = place.photos[0].getUrl({ 'maxWidth': 200, 'maxHeight': 200 });
                 }
-                place.content = '<div id="infobox"><img src="' + place.photo + '"><p>' + place.name + '</p><p>' + place.phone + '</p><p>' + place.address + '</p><p> Avg. Rating:' + place.rating + '</p><p>' + place.review + '</p></div>'
-                place.icon = 'http://google.com/mapfiles/ms/micons/red-pushpin.png'
+                place.content = '<div id="infobox"><img src="' + place.photo + '"><p>' + place.name + '</p><p>' + place.phone + '</p><p>' + place.address + '</p><p> Avg. Rating:' + place.rating + '</p><p>' + place.review + '</p></div>';
+                place.icon = 'http://google.com/mapfiles/ms/micons/red-pushpin.png';
                 place.marker = createSearchMarker(place);
                 self.placeList.push(new Place(place));
                 markerListener(place);
@@ -307,14 +308,15 @@ initialize = function () {
                 icon: place.icon
             });
             marker.setVisible(false);
-            return marker;
             markers.push(marker);
+            return marker;
+
         }
         //This is the marker listener that we called earlier. THis is the function that opens up the infobox when a marker is clicked.
         function markerListener(place) {
             google.maps.event.addListener(place.marker, 'click', function () {
                 closeAllBoxes();
-                infoBox = new InfoBox({
+                var infoBox = new InfoBox({
                     content: place.content,
                     disableAutoPan: false,
                     maxWidth: 150,
@@ -348,7 +350,7 @@ initialize = function () {
                     query: input
                 };
                 removeMarkers(self.placeList);
-                removeMarkers(self.couponList)
+
                 self.placeList.removeAll();
                 self.couponList.removeAll();
                 getSqoot(input);
@@ -383,9 +385,9 @@ initialize = function () {
                     var dealList = response['deals'];
 
                     for (var i = 0; i < dealList.length; i++) {
-                        deal = dealList[i];
+                       var deal = dealList[i];
                         getSqootPlaces(deal);
-                    };
+                    }
                     clearTimeout(sqootRequestTimeout);
                 }
             });
@@ -394,28 +396,28 @@ initialize = function () {
         function getSqootPlaces(deals) {
             var lat = deals.deal.merchant.latitude;
             var lng = deals.deal.merchant.longitude;
-            deal.position = new google.maps.LatLng(lat, lng);
-            deal.icon = 'http://maps.google.com/mapfiles/kml/pal2/icon61.png';
-            deal.photo = deals.deal.image_url;
-            deal.addressFormatted = deals.deal.merchant.address + '<br/>' + deals.deal.merchant.locality + ', ' + deals.deal.merchant.region;
-            deal.address = deals.deal.merchant.address + '  ' + deals.deal.merchant.locality + ', ' + deals.deal.merchant.region;
-            deal.dealTitle = deals.deal.short_title;
-            deal.name = deals.deal.merchant.name;
-            deal.marker = createSearchMarker(deal);
-            deal.url = deals.deal.url;
-            deal.content = '<div id="infobox"><img class="markerImg" src="' + deal.photo + '"><p>' + deal.name + '</p><p>' + deal.addressFormatted + '</p><p> Coupon:<br/>' + deal.dealTitle + '</p><li><a class="dealUrl" href="' + deal.url + '">' + deal.url + '</a></li></div>';
-            self.couponList.push(new Place(deal));
-            markerListener(deal);
+            deals.position = new google.maps.LatLng(lat, lng);
+            deals.icon = 'http://maps.google.com/mapfiles/kml/pal2/icon61.png';
+            deals.photo = deals.deal.image_url;
+            deals.addressFormatted = deals.deal.merchant.address + '<br/>' + deals.deal.merchant.locality + ', ' + deals.deal.merchant.region;
+            deals.address = deals.deal.merchant.address + '  ' + deals.deal.merchant.locality + ', ' + deals.deal.merchant.region;
+            deals.dealTitle = deals.deal.short_title;
+            deals.name = deals.deal.merchant.name;
+            deals.marker = createSearchMarker(deals);
+            deals.url = deals.deal.url;
+            deals.content = '<div id="infobox"><img class="markerImg" src="' + deals.photo + '"><p>' + deals.name + '</p><p>' + deals.addressFormatted + '</p><p> Coupon:<br/>' + deals.dealTitle + '</p><li><a class="dealUrl" href="' + deals.url + '">' + deals.url + '</a></li></div>';
+            self.couponList.push(new Place(deals));
+            markerListener(deals);
         }
         //This function takes our list of locations we created with important places and creates the proper place object with each location and creates markers and impPlaces list.
         function setImpPlaces() {
             for (i = 0; i < locations.length; i++) {
                 var place = locations[i];
                 place.position = new google.maps.LatLng(place.myLat, place.myLng);
-                place.icon = 'http://google.com/mapfiles/ms/micons/flag.png',
+                place.icon = 'http://google.com/mapfiles/ms/micons/flag.png';
                 place.marker = createSearchMarker(place);
                 place.marker.setVisible(true);
-                place.content = '<div id="infobox"><img class="photo" src="' + place.photo + '"><p>' + place.name + '</p><p>' + place.address + '</p></div>'
+                place.content = '<div id="infobox"><img class="photo" src="' + place.photo + '"><p>' + place.name + '</p><p>' + place.address + '</p></div>';
                 self.impPlaceList.push(new Place(place));
                 markerListener(place);
             }
@@ -435,9 +437,10 @@ initialize = function () {
                 marker.setVisible(false);
             }
         }
-    }
+    };
 
     ko.applyBindings(new ViewModel());
-}
+};
+
 
 
