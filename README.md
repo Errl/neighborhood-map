@@ -23,4 +23,9 @@ The current method used to filter through the markers seems heavy. I believe a b
 
 ### References
 
-* 
+* https://sites.google.com/site/gmapsdevelopment/
+* www.knockmeout.net/2011/04/utility-functions-in-knockoutjs.html
+* https://developers.google.com/maps/documentation/javascript/places#TextSearchRequests
+* https://developers.google.com/maps/documentation/javascript/tutorial
+* http://www.latlong.net/
+* http://www.latlong.net/
