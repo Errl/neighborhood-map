@@ -29,3 +29,6 @@ The current method used to filter through the markers seems heavy. I believe a b
 * https://developers.google.com/maps/documentation/javascript/tutorial
 * http://www.latlong.net/
 * http://www.knockmeout.net/blog/archives
+* http://knockoutjs.com/documentation/introduction.html
+* http://api.jquery.com/jquery.ajax/
+* https://tinypng.com/
