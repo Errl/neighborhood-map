@@ -46,7 +46,15 @@ var locations = [
          myLng: -74.004107,
          photo: 'img/postoffice.jpg',
          address: '350 Canal St New York, NY 10013'
-     }
+     },
+
+      {
+          name: 'Tribeca Grand Hotel',
+          myLat: 40.719418,
+          myLng: -74.004788,
+          photo: 'img/tribeca.jpg',
+          address: '2 Avenue of the Americas, New York, NY 10013, United States tribecagrand.com (212) 519-6600'
+      }
 ]
 
 //declare the place object
