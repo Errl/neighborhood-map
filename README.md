@@ -9,7 +9,8 @@ The current method used to filter through the markers seems heavy. I believe a b
 ## Installation
 1. Download or clone the repository.
 2. Unzip the repo if necessary.
-3. Open index.html in your browser of choice.
+3. Final source code is in the build folder.
+3. Open index.html from the build folder in your browser of choice.
 
 ## Tools Used
 * [Knockout.js](http://knockoutjs.com/)
