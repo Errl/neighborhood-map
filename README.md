@@ -28,4 +28,4 @@ The current method used to filter through the markers seems heavy. I believe a b
 * https://developers.google.com/maps/documentation/javascript/places#TextSearchRequests
 * https://developers.google.com/maps/documentation/javascript/tutorial
 * http://www.latlong.net/
-* http://www.latlong.net/
+* http://www.knockmeout.net/blog/archives
