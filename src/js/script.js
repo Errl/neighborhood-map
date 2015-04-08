@@ -350,7 +350,7 @@ window.onload = loadMapsAPI;
                     query: input
                 };
                 removeMarkers(self.placeList);
-
+                removeMarkers(self.couponList);
                 self.placeList.removeAll();
                 self.couponList.removeAll();
                 getSqoot(input);
